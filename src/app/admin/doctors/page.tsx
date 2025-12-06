@@ -58,9 +58,17 @@ export default function AdminDoctorsPage() {
           <h1 className="text-4xl font-bold text-gray-900">
             Gestionar Doctores 👨‍⚕️
           </h1>
-          <Button onClick={() => router.push(ROUTES.ADMIN)}>
-            ← Volver al Panel
-          </Button>
+          <div className="flex gap-4">
+            <Button 
+              onClick={() => alert('Función de agregar doctor en desarrollo.\n\nPara agregar un doctor:\n1. Primero debe registrarse como usuario\n2. Luego crear el perfil de doctor en la base de datos\n\nEsta función estará disponible próximamente.')}
+              className="!bg-green-500 !text-white hover:!bg-green-600"
+            >
+              ➕ Agregar Doctor
+            </Button>
+            <Button onClick={() => router.push(ROUTES.ADMIN)} variant="secondary">
+              ← Volver al Panel
+            </Button>
+          </div>
         </div>
 
         {doctors.length === 0 ? (
@@ -68,6 +76,14 @@ export default function AdminDoctorsPage() {
             <p className="text-center text-gray-600 py-8">
               No hay doctores registrados
             </p>
+            <div className="text-center mt-4">
+              <Button 
+                onClick={() => alert('Función de agregar doctor en desarrollo')}
+                className="!bg-green-500 !text-white hover:!bg-green-600"
+              >
+                ➕ Agregar Primer Doctor
+              </Button>
+            </div>
           </Card>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

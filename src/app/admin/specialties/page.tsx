@@ -58,9 +58,17 @@ export default function AdminSpecialtiesPage() {
           <h1 className="text-4xl font-bold text-gray-900">
             Gestionar Especialidades 🏥
           </h1>
-          <Button onClick={() => router.push(ROUTES.ADMIN)}>
-            ← Volver al Panel
-          </Button>
+          <div className="flex gap-4">
+            <Button 
+              onClick={() => alert('Función de agregar especialidad en desarrollo.\n\nPara agregar una especialidad médica, contacta al administrador del sistema.')}
+              className="!bg-purple-500 !text-white hover:!bg-purple-600"
+            >
+              ➕ Agregar Especialidad
+            </Button>
+            <Button onClick={() => router.push(ROUTES.ADMIN)} variant="secondary">
+              ← Volver al Panel
+            </Button>
+          </div>
         </div>
 
         {specialties.length === 0 ? (
@@ -111,19 +119,6 @@ export default function AdminSpecialtiesPage() {
             ))}
           </div>
         )}
-
-        <Card className="mt-8">
-          <h3 className="text-2xl font-bold mb-4 text-gray-900">Agregar Nueva Especialidad</h3>
-          <p className="text-gray-600 mb-4">
-            Esta funcionalidad estará disponible próximamente
-          </p>
-          <Button 
-            variant="secondary"
-            onClick={() => alert('Función en desarrollo')}
-          >
-            ➕ Agregar Especialidad
-          </Button>
-        </Card>
       </div>
     </div>
   );
