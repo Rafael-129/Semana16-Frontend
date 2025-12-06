@@ -60,7 +60,7 @@ export default function AdminDoctorsPage() {
           </h1>
           <div className="flex gap-4">
             <Button 
-              onClick={() => alert('Función de agregar doctor en desarrollo.\n\nPara agregar un doctor:\n1. Primero debe registrarse como usuario\n2. Luego crear el perfil de doctor en la base de datos\n\nEsta función estará disponible próximamente.')}
+              onClick={() => alert('✨ NUEVA FUNCIONALIDAD DISPONIBLE\n\n📋 Ahora puedes crear un doctor completo en un solo paso!\n\nEl sistema creará:\n✅ Usuario con correo y contraseña\n✅ Perfil de doctor automáticamente\n✅ Contraseña por defecto: Doctor123!\n\n⚠️ Nota: Esta función se implementará en el frontend próximamente.\n\nPor ahora, usa la API:\nPOST /api/doctors/complete\n\nCampos requeridos:\n- fullName (nombre completo)\n- email (correo)\n- specialtyId (ID especialidad)\n- licenseNumber (número de licencia)\n- phone, experience, consultationFee, bio (opcionales)')}
               className="!bg-green-500 !text-white hover:!bg-green-600"
             >
               ➕ Agregar Doctor
