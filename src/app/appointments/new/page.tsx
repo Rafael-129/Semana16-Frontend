@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Doctor } from '@/types/doctor.types';
@@ -11,7 +11,7 @@ import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import { ROUTES } from '@/constants';
 
-export default function NewAppointmentPage() {
+function NewAppointmentForm() {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
@@ -203,5 +203,17 @@ export default function NewAppointmentPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function NewAppointmentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl">Cargando...</p>
+      </div>
+    }>
+      <NewAppointmentForm />
+    </Suspense>
   );
 }
