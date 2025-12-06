@@ -9,6 +9,7 @@ import { doctorsService } from '@/services/doctors.service';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import AddDoctorModal from '@/components/admin/AddDoctorModal';
+import EditDoctorModal from '@/components/admin/EditDoctorModal';
 
 export default function AdminDoctorsPage() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -16,6 +17,8 @@ export default function AdminDoctorsPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loadingDoctors, setLoadingDoctors] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
 
   useEffect(() => {
     if (!loading) {
@@ -45,6 +48,11 @@ export default function AdminDoctorsPage() {
 
   const handleModalSuccess = () => {
     loadDoctors(); // Reload the doctors list after successful creation
+  };
+
+  const handleEdit = (doctor: Doctor) => {
+    setSelectedDoctor(doctor);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = async (doctorId: number, doctorName: string) => {
@@ -144,7 +152,7 @@ export default function AdminDoctorsPage() {
                   <Button 
                     variant="secondary" 
                     fullWidth
-                    onClick={() => alert('Función de editar en desarrollo')}
+                    onClick={() => handleEdit(doctor)}
                   >
                     ✏️ Editar
                   </Button>
@@ -167,6 +175,16 @@ export default function AdminDoctorsPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleModalSuccess}
+      />
+
+      <EditDoctorModal 
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedDoctor(null);
+        }}
+        onSuccess={handleModalSuccess}
+        doctor={selectedDoctor}
       />
     </div>
   );

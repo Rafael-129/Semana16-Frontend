@@ -8,12 +8,14 @@ import { appointmentsService } from '@/services/appointments.service';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { ROUTES, STATUS_COLORS, STATUS_LABELS } from '@/constants';
+import EditAppointmentModal from '@/components/appointments/EditAppointmentModal';
 
 function AppointmentDetailContent() {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
@@ -183,11 +185,10 @@ function AppointmentDetailContent() {
                 ❌ Cancelar Cita
               </Button>
               <Button
-                onClick={() => router.push(`${ROUTES.APPOINTMENTS}/edit/${appointment.id}`)}
+                onClick={() => setIsEditModalOpen(true)}
                 variant="secondary"
-                disabled
               >
-                ✏️ Editar (Próximamente)
+                ✏️ Editar Cita
               </Button>
             </div>
           </Card>
@@ -204,6 +205,13 @@ function AppointmentDetailContent() {
           </ul>
         </Card>
       </div>
+
+      <EditAppointmentModal 
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSuccess={loadAppointment}
+        appointment={appointment}
+      />
     </div>
   );
 }

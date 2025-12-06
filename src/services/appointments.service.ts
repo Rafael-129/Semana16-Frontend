@@ -18,6 +18,11 @@ export const appointmentsService = {
     return apiClient.post<Appointment>('/appointments', data);
   },
 
+  // Update appointment
+  update: async (id: number, data: Partial<CreateAppointmentData>) => {
+    return apiClient.put<Appointment>(`/appointments/${id}`, data);
+  },
+
   // Update appointment status
   updateStatus: async (id: number, status: AppointmentStatus) => {
     return apiClient.patch<Appointment>(`/appointments/${id}/status`, { status });
