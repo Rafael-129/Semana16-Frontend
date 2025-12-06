@@ -18,6 +18,20 @@ export const doctorsService = {
     return apiClient.post<Doctor>('/doctors', data);
   },
 
+  // Create complete doctor (User + Profile) - Admin only
+  createComplete: async (data: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    specialtyId: number;
+    licenseNumber: string;
+    experience?: number;
+    consultationFee?: number;
+    bio?: string;
+  }) => {
+    return apiClient.post<any>('/doctors/complete', data);
+  },
+
   // Update doctor (Admin only)
   update: async (id: number, data: any) => {
     return apiClient.put<Doctor>(`/doctors/${id}`, data);

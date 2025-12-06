@@ -8,12 +8,14 @@ import { Doctor } from '@/types/doctor.types';
 import { doctorsService } from '@/services/doctors.service';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+import AddDoctorModal from '@/components/admin/AddDoctorModal';
 
 export default function AdminDoctorsPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loadingDoctors, setLoadingDoctors] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!loading) {
@@ -41,6 +43,25 @@ export default function AdminDoctorsPage() {
     }
   };
 
+  const handleModalSuccess = () => {
+    loadDoctors(); // Reload the doctors list after successful creation
+  };
+
+  const handleDelete = async (doctorId: number, doctorName: string) => {
+    if (!confirm(`¿Estás seguro de eliminar al Dr. ${doctorName}?\n\nEsta acción no se puede deshacer.`)) {
+      return;
+    }
+
+    try {
+      await doctorsService.delete(doctorId);
+      alert('Doctor eliminado exitosamente');
+      loadDoctors(); // Reload the list
+    } catch (error: any) {
+      alert(error.response?.data?.message || 'Error al eliminar el doctor');
+      console.error('Error deleting doctor:', error);
+    }
+  };
+
   if (loading || loadingDoctors) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -60,7 +81,7 @@ export default function AdminDoctorsPage() {
           </h1>
           <div className="flex gap-4">
             <Button 
-              onClick={() => alert('✨ NUEVA FUNCIONALIDAD DISPONIBLE\n\n📋 Ahora puedes crear un doctor completo en un solo paso!\n\nEl sistema creará:\n✅ Usuario con correo y contraseña\n✅ Perfil de doctor automáticamente\n✅ Contraseña por defecto: Doctor123!\n\n⚠️ Nota: Esta función se implementará en el frontend próximamente.\n\nPor ahora, usa la API:\nPOST /api/doctors/complete\n\nCampos requeridos:\n- fullName (nombre completo)\n- email (correo)\n- specialtyId (ID especialidad)\n- licenseNumber (número de licencia)\n- phone, experience, consultationFee, bio (opcionales)')}
+              onClick={() => setIsModalOpen(true)}
               className="!bg-green-500 !text-white hover:!bg-green-600"
             >
               ➕ Agregar Doctor
@@ -78,7 +99,7 @@ export default function AdminDoctorsPage() {
             </p>
             <div className="text-center mt-4">
               <Button 
-                onClick={() => alert('Función de agregar doctor en desarrollo')}
+                onClick={() => setIsModalOpen(true)}
                 className="!bg-green-500 !text-white hover:!bg-green-600"
               >
                 ➕ Agregar Primer Doctor
@@ -130,11 +151,7 @@ export default function AdminDoctorsPage() {
                   <Button 
                     variant="secondary" 
                     fullWidth
-                    onClick={() => {
-                      if (confirm('¿Estás seguro de eliminar este doctor?')) {
-                        alert('Función de eliminar en desarrollo');
-                      }
-                    }}
+                    onClick={() => handleDelete(doctor.id, doctor.user.fullName)}
                     className="!bg-red-500 !text-white hover:!bg-red-600"
                   >
                     🗑️ Eliminar
@@ -145,6 +162,12 @@ export default function AdminDoctorsPage() {
           </div>
         )}
       </div>
+
+      <AddDoctorModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleModalSuccess}
+      />
     </div>
   );
 }
